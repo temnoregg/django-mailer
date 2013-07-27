@@ -46,8 +46,9 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
     email = msg.email
     email = EmailMessage(email.subject, email.body, email.from_email, email.to)
     
-    for f in attach_files:
-        email.attach_file(f)
+    if attach_files:
+        for f in attach_files:
+            email.attach_file(f)
     msg.email = email
     msg.save()
     return 1
