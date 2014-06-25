@@ -31,6 +31,7 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
               fail_silently=False, auth_user=None, auth_password=None, attach_files=None):
     from django.utils.encoding import force_unicode
     from mailer.models import make_message
+    from django.core.mail.message import EmailMessage
     
     priority = PRIORITY_MAPPING[priority]
     
