@@ -47,9 +47,8 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
     email = msg.email
     email = EmailMessage(email.subject, email.body, email.from_email, email.to)
     
-    if attach_files:
-        for f in attach_files:
-            email.attach_file(f)
+    for f in attach_files:
+        email.attach_file(f)
     msg.email = email
     msg.save()
     return 1
@@ -57,7 +56,7 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
 
 def send_html_mail(subject, message, message_html, from_email, recipient_list,
                    priority="medium", fail_silently=False, auth_user=None,
-                   auth_password=None, attach_files=None):
+                   auth_password=None, attach_files=[]):
     """
     Function to queue HTML e-mails
     """
