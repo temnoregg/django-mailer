@@ -48,7 +48,11 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
     email = EmailMessage(email.subject, email.body, email.from_email, email.to)
     
     for f in attach_files:
-        email.attach_file(f)
+        if isinstance(f, str):
+            email.attach_file(f)
+        else isinstance(f, (tuple, list)):
+            email.attach(f)
+            
     msg.email = email
     msg.save()
     return 1
@@ -78,8 +82,13 @@ def send_html_mail(subject, message, message_html, from_email, recipient_list,
     email = msg.email
     email = EmailMultiAlternatives(email.subject, email.body, email.from_email, email.to)
     email.attach_alternative(message_html, "text/html")
+
     for f in attach_files:
-        email.attach_file(f)
+        if isinstance(f, str):
+            email.attach_file(f)
+        else isinstance(f, (tuple, list)):
+            email.attach(f)
+
     msg.email = email
     msg.save()
     return 1
