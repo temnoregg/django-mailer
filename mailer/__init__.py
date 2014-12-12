@@ -51,7 +51,8 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
         if isinstance(f, str):
             email.attach_file(f)
         elif isinstance(f, (tuple, list)):
-            email.attach(f)
+            n, fi, mime = f + (None,) * (3 - len(f))
+            email.attach(n, fi, mime)
             
     msg.email = email
     msg.save()
@@ -87,7 +88,8 @@ def send_html_mail(subject, message, message_html, from_email, recipient_list,
         if isinstance(f, str):
             email.attach_file(f)
         elif isinstance(f, (tuple, list)):
-            email.attach(f)
+            n, fi, mime = f + (None,) * (3 - len(f))
+            email.attach(n, fi, mime)
 
     msg.email = email
     msg.save()
