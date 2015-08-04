@@ -32,13 +32,13 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
     from django.utils.encoding import force_unicode
     from mailer.models import make_message
     from django.core.mail.message import EmailMessage
-    
+
     priority = PRIORITY_MAPPING[priority]
-    
+
     # need to do this in case subject used lazy version of ugettext
     subject = force_unicode(subject)
     message = force_unicode(message)
-    
+
     msg = make_message(subject=subject,
                  body=message,
                  from_email=from_email,
@@ -46,14 +46,14 @@ def send_mail(subject, message, from_email, recipient_list, priority="medium",
                  priority=priority)
     email = msg.email
     email = EmailMessage(email.subject, email.body, email.from_email, email.to)
-    
+
     for f in attach_files:
         if isinstance(f, str):
             email.attach_file(f)
         elif isinstance(f, (tuple, list)):
             n, fi, mime = f + (None,) * (3 - len(f))
             email.attach(n, fi, mime)
-            
+
     msg.email = email
     msg.save()
     return 1
@@ -68,13 +68,13 @@ def send_html_mail(subject, message, message_html, from_email, recipient_list,
     from django.utils.encoding import force_unicode
     from django.core.mail import EmailMultiAlternatives
     from mailer.models import make_message
-    
+
     priority = PRIORITY_MAPPING[priority]
-    
+
     # need to do this in case subject used lazy version of ugettext
     subject = force_unicode(subject)
     message = force_unicode(message)
-    
+
     msg = make_message(subject=subject,
                        body=message,
                        from_email=from_email,
@@ -85,7 +85,7 @@ def send_html_mail(subject, message, message_html, from_email, recipient_list,
     email.attach_alternative(message_html, "text/html")
 
     for f in attach_files:
-        if isinstance(f, str):
+        if isinstance(f, (str, unicode)):
             email.attach_file(f)
         elif isinstance(f, (tuple, list)):
             n, fi, mime = f + (None,) * (3 - len(f))
@@ -108,7 +108,7 @@ def send_mass_mail(datatuple, fail_silently=False, auth_user=None,
 def mail_admins(subject, message, fail_silently=False, connection=None, priority="medium"):
     from django.conf import settings
     from django.utils.encoding import force_unicode
-    
+
     return send_mail(settings.EMAIL_SUBJECT_PREFIX + force_unicode(subject),
                      message,
                      settings.SERVER_EMAIL,
@@ -118,7 +118,7 @@ def mail_admins(subject, message, fail_silently=False, connection=None, priority
 def mail_managers(subject, message, fail_silently=False, connection=None, priority="medium"):
     from django.conf import settings
     from django.utils.encoding import force_unicode
-    
+
     return send_mail(settings.EMAIL_SUBJECT_PREFIX + force_unicode(subject),
                      message,
                      settings.SERVER_EMAIL,
