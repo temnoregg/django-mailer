@@ -25,7 +25,7 @@ setup(
         "Framework :: Django",
     ],
     install_requires=[
-        'Django >= 1.4',
+        'Django',
         'lockfile >= 0.8',
         ],
 )
